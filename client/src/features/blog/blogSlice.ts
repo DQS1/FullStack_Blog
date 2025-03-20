@@ -25,14 +25,14 @@ const blogSlice = createSlice({
   initialState,
   reducers: {
     getAllBlog(state) {
-      state.createBlogLoading = true;
+      state.getAllBlogLoading = true;
     },
     getAllBlogSuccess(state, { payload }) {
-      state.createBlogLoading = false;
-      state.createBlogResponse = payload.data;
+      state.getAllBlogLoading = false;
+      state.getAllBlogResponse = payload.data;
     },
     getAllBlogFailure(state) {
-      state.createBlogLoading = false;
+      state.getAllBlogResponse = false;
     },
     createBlog(state, _payload) {
       state.createBlogLoading = true;
