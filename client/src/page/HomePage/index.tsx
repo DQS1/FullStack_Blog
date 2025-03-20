@@ -1,3 +1,5 @@
+import { Plus } from 'lucide-react';
+import FloatingActionBUtton from '~/components/fab';
 import Header from '~/components/header';
 import BlogList from '~/page/HomePage/components/BlogList';
 
@@ -6,6 +8,7 @@ const HomePage = () => {
     <div>
       <Header />
       <BlogList />
+      <FloatingActionBUtton icon={<Plus />} />
     </div>
   );
 };

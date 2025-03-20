@@ -1,4 +1,3 @@
-import React from 'react';
 import BlogItem from '~/page/HomePage/components/BlogList/BlogItem';
 
 const BlogList = () => {
