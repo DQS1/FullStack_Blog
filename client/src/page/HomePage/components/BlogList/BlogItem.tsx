@@ -10,7 +10,7 @@ import {
 } from '~/components/ui/card';
 
 interface BlogItemProps {
-  id: string;
+  _id: string;
   author: string;
   createdAt: string;
   attachment: string;
@@ -20,9 +20,8 @@ interface BlogItemProps {
 }
 
 const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
-  const formatData = (day: string) => {
-    return `${moment(day).format('HH:mm MM DD YYYY')}`;
-  };
+  const formatDate = (date: string) =>
+    moment(date).format('HH:mm - DD/MM/YYYY');
 
   return (
     <Card className='shadow-md'>
@@ -35,7 +34,7 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
           <div>
             <h3 className='font-semibold'>{blogData.author}</h3>
             <p className='text-sm text-gray-400'>
-              {formatData(blogData.createdAt)}
+              {formatDate(blogData.createdAt)}
             </p>
           </div>
         </div>
@@ -43,11 +42,14 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
       </CardHeader>
 
       <CardContent>
-        <img
-          src={`${blogData.attachment}`}
-          alt='Paella'
-          className='h-[200px] w-full object-cover'
-        />
+        {blogData.attachment && (
+          <img
+            src={blogData.attachment}
+            alt='Blog image'
+            className='h-[200px] w-full object-cover'
+          />
+        )}
+
         <h4 className='mt-2 scroll-m-20 text-xl font-semibold tracking-tight'>
           {blogData?.title}
         </h4>
@@ -55,7 +57,7 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
       </CardContent>
 
       <CardFooter className=''>
-        <Button variant={'ghost'}>
+        <Button className='cursor-pointer' variant={'ghost'}>
           <Heart />
         </Button>
         <h6 className='scroll-m-20 justify-center font-light tracking-tight'>

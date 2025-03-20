@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { blogActions } from '~/features/blog/blogSlice';
 
 interface BlogItemProps {
-  id: string;
+  _id: string;
   author: string;
   createdAt: string;
   attachment: string;
@@ -31,8 +31,8 @@ const BlogList = () => {
 
   return (
     <div className='my-2 grid grid-flow-row grid-cols-2 gap-4'>
-      {Blogs.map((blog: BlogItemProps) => (
-        <BlogItem key={blog.id} blogData={blog} />
+      {Blogs.map((blog: BlogItemProps, index: number) => (
+        <BlogItem key={blog?._id || index} blogData={blog} />
       ))}
     </div>
   );

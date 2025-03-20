@@ -8,7 +8,7 @@ interface FloatingActionButtonProps {
   className?: string;
 }
 
-const FloatingActionBUtton = ({
+const FloatingActionButton = ({
   icon,
   onClick,
   className
@@ -27,4 +27,4 @@ const FloatingActionBUtton = ({
   );
 };
 
-export default FloatingActionBUtton;
+export default FloatingActionButton;
