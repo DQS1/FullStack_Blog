@@ -11,11 +11,14 @@ const BlogController = {
   },
   createBlog: async (req, res, next) => {
     try {
-      const newBlog = req.body;
-
-      const blog = new Blog(newBlog);
-      await blog.save();
-      res.status(200).json(blog);
+      const { title, content, author } = req.body;
+      const attachment = req.file ? `/uploads/${req.file.filename}` : null;
+      const newBlog = new Blog({ title, content, author, attachment });
+      await newBlog.save();
+      res.status(200).json({
+        message: "Upload thành công!",
+        blog: newBlog,
+      });
     } catch (error) {
       res.status(500).json({ error: error });
     }

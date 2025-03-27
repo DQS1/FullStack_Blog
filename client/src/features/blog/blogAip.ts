@@ -9,8 +9,13 @@ const blogApi = {
   },
   createBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
     const response: AxiosResponse = await axiosInstance.post<any>(
-      '/blog',
-      payload
+      '/create',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     );
     return response;
   },

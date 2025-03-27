@@ -8,6 +8,12 @@ import {
   CardFooter,
   CardHeader
 } from '~/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '~/components/ui/dropdown-menu';
 
 interface BlogItemProps {
   _id: string;
@@ -20,6 +26,7 @@ interface BlogItemProps {
 }
 
 const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
+  console.log('🚀 ~ BlogItem ~ blogData:', blogData);
   const formatDate = (date: string) =>
     moment(date).format('HH:mm - DD/MM/YYYY');
 
@@ -38,13 +45,28 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
             </p>
           </div>
         </div>
-        <MoreVertical className='cursor-pointer text-gray-400' />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={'ghost'}
+              size={'icon'}
+              className='cursor-pointer hover:rounded-full'
+            >
+              <MoreVertical className='cursor-pointer text-gray-400' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side='bottom'>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Team</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </CardHeader>
 
       <CardContent>
         {blogData.attachment && (
           <img
-            src={blogData.attachment}
+            src={`http://localhost:5000${blogData?.attachment}`}
             alt='Blog image'
             className='h-[200px] w-full object-cover'
           />

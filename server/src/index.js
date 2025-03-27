@@ -11,6 +11,7 @@ connect();
 
 app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ extended: true, limit: "30mb" }));
+app.use("/uploads", express.static("uploads"));
 app.use(cors());
 
 router(app);
