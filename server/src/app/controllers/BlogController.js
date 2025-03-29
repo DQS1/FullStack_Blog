@@ -1,4 +1,12 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import Blog from "../models/BlogModel.js";
+
+const __filename = fileURLToPath(import.meta.url);
+console.log("🚀 ~ __filename:", __filename);
+const __dirname = path.dirname(__filename);
+console.log("🚀 ~ __dirname:", __dirname);
 
 const BlogController = {
   getAllBlog: async (req, res, next) => {
@@ -37,6 +45,32 @@ const BlogController = {
 
       res.status(200).json(blog);
     } catch (error) {
+      res.status(500).json({ error: error });
+    }
+  },
+  deleteBlog: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const deletedBlog = await Blog.findByIdAndDelete(id);
+
+      if (!deletedBlog) {
+        return res.status(400).json({ message: "Blog not found" });
+      }
+
+      if (deletedBlog.attachment) {
+        const filePath = path.join(
+          __dirname,
+          "../../..",
+          deletedBlog.attachment
+        ); // Đường dẫn file
+        console.log("🚀 ~ deleteBlog: ~ filePath:", filePath);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath); // Xóa file ảnh
+        }
+      }
+
+      res.status(200).json({ message: "Blog deleted successfully" });
+    } catch {
       res.status(500).json({ error: error });
     }
   },

@@ -39,8 +39,18 @@ export function* updateBlogWorker({ payload }: ActionType): Generator {
   }
 }
 
+export function* deleteBlogWorker({ payload }: ActionType): Generator {
+  try {
+    const response = yield call(blogApi.deleteBlog, payload);
+    yield put(blogActions.deleteBlogSuccess(response));
+  } catch (error) {
+    yield put(blogActions.deleteBlogFailure());
+  }
+}
+
 export const blogWatcher = [
   takeEvery(blogActions.getAllBlog, getAllBlogWorker),
   takeEvery(blogActions.createBlog, createBlogWorker),
-  takeEvery(blogActions.updateBlog, updateBlogWorker)
+  takeEvery(blogActions.updateBlog, updateBlogWorker),
+  takeEvery(blogActions.deleteBlog, deleteBlogWorker)
 ];

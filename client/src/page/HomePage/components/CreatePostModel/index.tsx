@@ -89,6 +89,7 @@ export default function CreatePostModel({
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+    dispatch(blogActions.getAllBlog());
   };
 
   return (

@@ -20,6 +20,7 @@ const BlogList = () => {
   const Blogs = useAppSelector(
     (state: RootState) => state.blog.getAllBlogResponse
   );
+  console.log('🚀 ~ BlogList ~ Blogs:', Blogs);
 
   useEffect(() => {
     dispatch(blogActions.getAllBlog());

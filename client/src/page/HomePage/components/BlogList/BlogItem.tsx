@@ -14,6 +14,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '~/components/ui/dropdown-menu';
+import { blogActions } from '~/features/blog/blogSlice';
+import { useAppDispatch } from '~/hooks/useAppDispatch';
 
 interface BlogItemProps {
   _id: string;
@@ -26,9 +28,15 @@ interface BlogItemProps {
 }
 
 const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
-  console.log('🚀 ~ BlogItem ~ blogData:', blogData);
+  const dispatch = useAppDispatch();
+
   const formatDate = (date: string) =>
     moment(date).format('HH:mm - DD/MM/YYYY');
+
+  const handleDeleteBlog = (id: string) => {
+    dispatch(blogActions.deleteBlog(id));
+    dispatch(blogActions.getAllBlog());
+  };
 
   return (
     <Card className='shadow-md'>
@@ -56,9 +64,9 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom'>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDeleteBlog(blogData._id)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>

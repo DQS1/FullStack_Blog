@@ -11,5 +11,6 @@ blogRoute.post(
   BlogController.createBlog
 );
 blogRoute.post("/update", BlogController.updateBlog);
+blogRoute.delete("/delete/:id", BlogController.deleteBlog);
 
 export default blogRoute;

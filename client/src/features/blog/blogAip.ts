@@ -22,6 +22,13 @@ const blogApi = {
   updateBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
     const response: AxiosResponse = await axiosInstance.post<any>('/', payload);
     return response;
+  },
+  deleteBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
+    console.log('🚀 ~ deleteBlog: ~ payload:', payload);
+    const response: AxiosResponse = await axiosInstance.delete<any>(
+      `/delete/${payload}`
+    );
+    return response;
   }
 };
 

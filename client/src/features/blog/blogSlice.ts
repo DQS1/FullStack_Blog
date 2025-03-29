@@ -9,6 +9,8 @@ type stateType = {
   createBlogResponse: any;
   updateBlogLoading: boolean;
   updateBlogResponse: any;
+  deleteBlogLoading: boolean;
+  deleteBlogResponse: any;
 };
 
 const initialState: stateType = {
@@ -17,7 +19,9 @@ const initialState: stateType = {
   createBlogLoading: false,
   createBlogResponse: null,
   updateBlogLoading: false,
-  updateBlogResponse: null
+  updateBlogResponse: null,
+  deleteBlogLoading: false,
+  deleteBlogResponse: null
 };
 
 const blogSlice = createSlice({
@@ -53,6 +57,16 @@ const blogSlice = createSlice({
     },
     updateBlogFailure(state) {
       state.updateBlogLoading = false;
+    },
+    deleteBlog(state, _payload) {
+      state.deleteBlogLoading = true;
+    },
+    deleteBlogSuccess(state, { payload }) {
+      state.deleteBlogLoading = false;
+      state.deleteBlogResponse = payload.data;
+    },
+    deleteBlogFailure(state) {
+      state.deleteBlogLoading = false;
     }
   }
 });
