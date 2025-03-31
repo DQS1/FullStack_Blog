@@ -4,9 +4,7 @@ import { fileURLToPath } from "url";
 import Blog from "../models/BlogModel.js";
 
 const __filename = fileURLToPath(import.meta.url);
-console.log("🚀 ~ __filename:", __filename);
 const __dirname = path.dirname(__filename);
-console.log("🚀 ~ __dirname:", __dirname);
 
 const BlogController = {
   getAllBlog: async (req, res, next) => {
@@ -63,7 +61,6 @@ const BlogController = {
           "../../..",
           deletedBlog.attachment
         ); // Đường dẫn file
-        console.log("🚀 ~ deleteBlog: ~ filePath:", filePath);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath); // Xóa file ảnh
         }

@@ -24,7 +24,6 @@ const blogApi = {
     return response;
   },
   deleteBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
-    console.log('🚀 ~ deleteBlog: ~ payload:', payload);
     const response: AxiosResponse = await axiosInstance.delete<any>(
       `/delete/${payload}`
     );

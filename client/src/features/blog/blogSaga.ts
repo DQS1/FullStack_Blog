@@ -20,9 +20,13 @@ export function* getAllBlogWorker(): Generator {
 }
 
 export function* createBlogWorker({ payload }: ActionType): Generator {
+  console.log('🚀 ~ function*createBlogWorker ~ payload:', payload);
   try {
-    const response = yield call(blogApi.createBlog, payload);
-    yield put(blogActions.createBlogSuccess(response));
+    const response = yield call(blogApi.createBlog, payload.formData);
+    if (response.status == 200) {
+      yield put(blogActions.createBlogSuccess(response));
+      payload.onSuccess();
+    }
   } catch (error) {
     // showErrorNotification("Get User failure!");
     yield put(blogActions.createBlogFailure());
@@ -41,8 +45,11 @@ export function* updateBlogWorker({ payload }: ActionType): Generator {
 
 export function* deleteBlogWorker({ payload }: ActionType): Generator {
   try {
-    const response = yield call(blogApi.deleteBlog, payload);
-    yield put(blogActions.deleteBlogSuccess(response));
+    const response = yield call(blogApi.deleteBlog, payload.id);
+    if (response.status == 200) {
+      yield put(blogActions.deleteBlogSuccess(response));
+      payload.onSuccess();
+    }
   } catch (error) {
     yield put(blogActions.deleteBlogFailure());
   }

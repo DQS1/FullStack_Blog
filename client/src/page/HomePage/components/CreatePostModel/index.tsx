@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogDescription } from '@radix-ui/react-dialog';
-import { Plus } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import FloatingActionButton from '~/components/fab';
 import { Button } from '~/components/ui/button';
 import {
@@ -25,9 +27,9 @@ import { Label } from '~/components/ui/label';
 import { Textarea } from '~/components/ui/textarea';
 import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
+import { useAppSelector } from '~/hooks/useAppSelector';
 import { actionsCreatorProps, homePageStates } from '~/page/HomePage/types';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { RootState } from '~/redux/store';
 
 interface CreatePostModelType {
   state: homePageStates;
@@ -49,6 +51,9 @@ export default function CreatePostModel({
   const { isPostModelOpen } = state;
 
   const dispatch = useAppDispatch();
+  const updateBlogLoading = useAppSelector(
+    (state: RootState) => state.blog.createBlogLoading
+  );
 
   const formSchema = z.object({
     title: z.string().min(3, 'Title must be at least 3 characters'),
@@ -70,11 +75,6 @@ export default function CreatePostModel({
     }
   });
   const onSubmit = (data: uploadDataType) => {
-    console.log('Form Data:', {
-      ...data,
-      attachment: data?.attachment ? data?.attachment : 'No file uploaded'
-    });
-
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('content', data.content);
@@ -82,14 +82,20 @@ export default function CreatePostModel({
     if (data.attachment) {
       formData.append('attachment', data.attachment);
     }
+
+    const payload = {
+      formData,
+      onSuccess: () => {
+        actions.onPost(false);
+        dispatch(blogActions.getAllBlog());
+      }
+    };
     console.log('🚀 ~ Form Data:', Object.fromEntries(formData.entries()));
-    dispatch(blogActions.createBlog(data));
-    actions.onPost(false);
+    dispatch(blogActions.createBlog(payload));
     form.reset();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    dispatch(blogActions.getAllBlog());
   };
 
   return (
@@ -179,8 +185,16 @@ export default function CreatePostModel({
               />
             </div>
             <DialogFooter>
-              <Button className='w-full cursor-pointer' type='submit'>
-                Create
+              <Button
+                disabled={updateBlogLoading}
+                className='w-full cursor-pointer'
+                type='submit'
+              >
+                {updateBlogLoading ? (
+                  <Loader2 className='animate-spin opacity-65' />
+                ) : (
+                  'Create'
+                )}
               </Button>
             </DialogFooter>
           </form>

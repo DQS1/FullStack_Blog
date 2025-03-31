@@ -33,9 +33,14 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
   const formatDate = (date: string) =>
     moment(date).format('HH:mm - DD/MM/YYYY');
 
-  const handleDeleteBlog = (id: string) => {
-    dispatch(blogActions.deleteBlog(id));
-    dispatch(blogActions.getAllBlog());
+  const handleDeleteBlog = async (id: string) => {
+    const payload = {
+      id,
+      onSuccess: () => {
+        dispatch(blogActions.getAllBlog());
+      }
+    };
+    dispatch(blogActions.deleteBlog(payload));
   };
 
   return (
