@@ -1,18 +1,15 @@
-import { Fragment } from 'react';
 import Header from '~/components/header';
 import BlogList from '~/page/HomePage/components/BlogList';
 import CreatePostModel from '~/page/HomePage/components/CreatePostModel';
-import { useHomePageReducer } from '~/page/HomePage/reducer';
+import { HomePageProvider } from '~/page/HomePage/reducer/homePageContext';
 
 const HomePage = () => {
-  const [state, actions] = useHomePageReducer();
-
   return (
-    <Fragment>
+    <HomePageProvider>
       <Header />
       <BlogList />
-      <CreatePostModel state={state} actions={actions} />
-    </Fragment>
+      <CreatePostModel />
+    </HomePageProvider>
   );
 };
 

@@ -4,7 +4,6 @@ import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import BlogItem from '~/page/HomePage/components/BlogList/BlogItem';
-import { actionsCreatorProps, homePageStates } from '~/page/HomePage/types';
 import { RootState } from '~/redux/store';
 
 interface BlogItemProps {
@@ -15,11 +14,6 @@ interface BlogItemProps {
   title: string;
   content: string;
   likeCount: number;
-}
-
-interface BlogListType {
-  state?: homePageStates;
-  actions?: actionsCreatorProps;
 }
 
 const BlogList = () => {

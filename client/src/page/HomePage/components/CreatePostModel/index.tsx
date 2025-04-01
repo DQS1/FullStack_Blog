@@ -28,17 +28,9 @@ import { Textarea } from '~/components/ui/textarea';
 import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import {
-  actionsCreatorProps,
-  homePageStates,
-  ModeModel
-} from '~/page/HomePage/types';
+import useHomePageContext from '~/page/HomePage/reducer/homePageContext';
+import { ModeModel } from '~/page/HomePage/types';
 import { RootState } from '~/redux/store';
-
-interface CreatePostModelType {
-  state: homePageStates;
-  actions: actionsCreatorProps;
-}
 
 interface uploadDataType {
   title: string;
@@ -46,12 +38,9 @@ interface uploadDataType {
   attachment: File;
 }
 
-export default function CreatePostModel({
-  state,
-  actions
-}: CreatePostModelType) {
+export default function CreatePostModel() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  const { state, actions } = useHomePageContext();
   const { isModelOpen, modeModel } = state;
 
   const dispatch = useAppDispatch();
