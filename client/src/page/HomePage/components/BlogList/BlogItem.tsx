@@ -44,7 +44,7 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
   };
 
   return (
-    <Card className='shadow-md'>
+    <Card className='blog-item shadow-md' data-blog={blogData._id}>
       <CardHeader className='flex-row items-center justify-between'>
         <div className='flex items-center gap-4'>
           <Avatar>
@@ -69,9 +69,13 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom'>
-            <DropdownMenuItem onClick={() => handleDeleteBlog(blogData._id)}>
+            <DropdownMenuItem
+              className='btn-delete'
+              onClick={() => handleDeleteBlog(blogData._id)}
+            >
               Delete
             </DropdownMenuItem>
+            <DropdownMenuItem className='btn-update'>Update</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>

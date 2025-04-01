@@ -31,15 +31,13 @@ const BlogController = {
   },
   updateBlog: async (req, res, next) => {
     try {
+      const { id } = req.params;
       const updateBlog = req.body;
 
-      const blog = await Blog.findByIdAndUpdate(
-        {
-          _id: updateBlog._id,
-        },
-        updateBlog,
-        { returnDocument: "after" }
-      );
+      const blog = await Blog.findByIdAndUpdate(id, updateBlog, {
+        returnDocument: "after",
+      });
+      console.log("🚀 ~ updateBlog: ~ blog:", blog);
 
       res.status(200).json(blog);
     } catch (error) {

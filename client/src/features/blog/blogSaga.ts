@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { showToast } from '~/utils/notification';
 import { blogApi } from './blogAip';
 import { blogActions } from './blogSlice';
 
@@ -26,10 +27,12 @@ export function* createBlogWorker({ payload }: ActionType): Generator {
     if (response.status == 200) {
       yield put(blogActions.createBlogSuccess(response));
       payload.onSuccess();
+      showToast('Create success', 'success');
     }
   } catch (error) {
     // showErrorNotification("Get User failure!");
     yield put(blogActions.createBlogFailure());
+    showToast(`Create failure: ${error}`, 'error');
   }
 }
 
@@ -49,9 +52,11 @@ export function* deleteBlogWorker({ payload }: ActionType): Generator {
     if (response.status == 200) {
       yield put(blogActions.deleteBlogSuccess(response));
       payload.onSuccess();
+      showToast('Delete success', 'success');
     }
   } catch (error) {
     yield put(blogActions.deleteBlogFailure());
+    showToast(`Delete failure: ${error}`, 'error');
   }
 }
 

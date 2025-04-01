@@ -10,7 +10,7 @@ blogRoute.post(
   upload.single("attachment"),
   BlogController.createBlog
 );
-blogRoute.post("/update", BlogController.updateBlog);
+blogRoute.put("/update/:id", BlogController.updateBlog);
 blogRoute.delete("/delete/:id", BlogController.deleteBlog);
 
 export default blogRoute;

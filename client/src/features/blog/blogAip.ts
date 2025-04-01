@@ -20,7 +20,10 @@ const blogApi = {
     return response;
   },
   updateBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
-    const response: AxiosResponse = await axiosInstance.post<any>('/', payload);
+    const response: AxiosResponse = await axiosInstance.put<any>(
+      `/update/${payload.id}`,
+      payload
+    );
     return response;
   },
   deleteBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {

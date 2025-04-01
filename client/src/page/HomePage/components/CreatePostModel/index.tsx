@@ -28,7 +28,11 @@ import { Textarea } from '~/components/ui/textarea';
 import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import { actionsCreatorProps, homePageStates } from '~/page/HomePage/types';
+import {
+  actionsCreatorProps,
+  homePageStates,
+  ModeModel
+} from '~/page/HomePage/types';
 import { RootState } from '~/redux/store';
 
 interface CreatePostModelType {
@@ -48,7 +52,7 @@ export default function CreatePostModel({
 }: CreatePostModelType) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { isPostModelOpen } = state;
+  const { isModelOpen, modeModel } = state;
 
   const dispatch = useAppDispatch();
   const updateBlogLoading = useAppSelector(
@@ -74,6 +78,15 @@ export default function CreatePostModel({
       attachment: undefined
     }
   });
+
+  const renderTitle = () => {
+    switch (modeModel) {
+      case ModeModel.EDIT:
+        return 'Create New Blog';
+      default:
+        return 'Update Blog';
+    }
+  };
   const onSubmit = (data: uploadDataType) => {
     const formData = new FormData();
     formData.append('title', data.title);
@@ -86,7 +99,7 @@ export default function CreatePostModel({
     const payload = {
       formData,
       onSuccess: () => {
-        actions.onPost(false);
+        actions.onOpenModel(false);
         dispatch(blogActions.getAllBlog());
       }
     };
@@ -100,12 +113,13 @@ export default function CreatePostModel({
 
   return (
     <Dialog
-      open={isPostModelOpen}
+      open={isModelOpen}
       onOpenChange={(isOpen) => {
         if (isOpen) {
-          actions.onPost(true);
+          actions.onOpenModel(true);
+          actions.onChangeModeModel(ModeModel.CREATE);
         } else {
-          actions.onPost(false);
+          actions.onOpenModel(false);
           form.reset();
         }
       }}
@@ -120,7 +134,7 @@ export default function CreatePostModel({
         }}
       >
         <DialogHeader>
-          <DialogTitle className='text-center'>Create New Post</DialogTitle>
+          <DialogTitle className='text-center'>{renderTitle()}</DialogTitle>
         </DialogHeader>
         <DialogDescription aria-describedby={undefined} />
 
