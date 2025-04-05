@@ -20,9 +20,16 @@ const blogApi = {
     return response;
   },
   updateBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
-    const response: AxiosResponse = await axiosInstance.put<any>(
+    console.log('🚀 ~ updateBlog: ~ payload.formData:', payload.formData);
+
+    const response: AxiosResponse = await axiosInstance.patch<any>(
       `/update/${payload.id}`,
-      payload
+      payload.formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     );
     return response;
   },

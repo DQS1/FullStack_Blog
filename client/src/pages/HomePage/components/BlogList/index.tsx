@@ -3,7 +3,7 @@ import Loading from '~/components/loading';
 import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import BlogItem from '~/page/HomePage/components/BlogList/BlogItem';
+import BlogItem from '~/pages/HomePage/components/BlogList/BlogItem';
 import { RootState } from '~/redux/store';
 
 interface BlogItemProps {
@@ -22,12 +22,10 @@ const BlogList = () => {
   const { getAllBlogLoading: blogLoading, getAllBlogResponse: blogs } =
     useAppSelector((state: RootState) => state.blog);
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLElement;
-    console.log('🚀 ~ handleClick ~ target:', target);
-    const blogId = target.closest('.blog-item')?.getAttribute('data-blog');
-    console.log('🚀 ~ handleClick ~ blogId:', blogId);
-  };
+  // const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  //    const target = event.target as HTMLElement;
+  //    const blogId = target.closest('.blog-item')?.getAttribute('data-blog');
+  // };
 
   useEffect(() => {
     dispatch(blogActions.getAllBlog());
@@ -38,7 +36,7 @@ const BlogList = () => {
   return blogs?.length ? (
     <div
       className='mx-[15%] my-2 grid grid-flow-row grid-cols-1 gap-4 md:mx-[5%] md:grid-cols-2'
-      onClick={handleClick}
+      // onClick={handleClick}
     >
       {blogs.map((blog: BlogItemProps, index: number) => (
         <BlogItem key={blog?._id || index} blogData={blog} />

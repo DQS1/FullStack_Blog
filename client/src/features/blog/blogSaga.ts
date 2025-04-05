@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { showToast } from '~/utils/notification';
-import { blogApi } from './blogAip';
+import { blogApi } from './blogApi';
 import { blogActions } from './blogSlice';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,13 +15,11 @@ export function* getAllBlogWorker(): Generator {
     const response = yield call(blogApi.getAllBlog);
     yield put(blogActions.getAllBlogSuccess(response));
   } catch (error) {
-    // showErrorNotification("Get User failure!");
     yield put(blogActions.getAllBlogFailure());
   }
 }
 
 export function* createBlogWorker({ payload }: ActionType): Generator {
-  console.log('🚀 ~ function*createBlogWorker ~ payload:', payload);
   try {
     const response = yield call(blogApi.createBlog, payload.formData);
     if (response.status == 200) {
@@ -30,7 +28,6 @@ export function* createBlogWorker({ payload }: ActionType): Generator {
       showToast('Create success', 'success');
     }
   } catch (error) {
-    // showErrorNotification("Get User failure!");
     yield put(blogActions.createBlogFailure());
     showToast(`Create failure: ${error}`, 'error');
   }
@@ -39,10 +36,14 @@ export function* createBlogWorker({ payload }: ActionType): Generator {
 export function* updateBlogWorker({ payload }: ActionType): Generator {
   try {
     const response = yield call(blogApi.updateBlog, payload);
-    yield put(blogActions.updateBlogSuccess(response));
+    if (response.status == 200) {
+      yield put(blogActions.updateBlogSuccess(response));
+      payload.onSuccess();
+      showToast('Update success', 'success');
+    }
   } catch (error) {
-    // showErrorNotification("Get User failure!");
     yield put(blogActions.updateBlogFailure());
+    showToast(`Update failure: ${error}`, 'error');
   }
 }
 

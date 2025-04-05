@@ -2,11 +2,12 @@
 import { useReducer } from 'react';
 import {
   actionsCreatorProps,
+  BlogItemProps,
   homePageActions,
   homePageStates,
   ModeModel,
   reducerActionProps
-} from '~/page/HomePage/types';
+} from '~/pages/HomePage/types';
 
 const homePageReducer = (state: homePageStates, action: reducerActionProps) => {
   switch (action.type) {
@@ -20,6 +21,12 @@ const homePageReducer = (state: homePageStates, action: reducerActionProps) => {
       return {
         ...state,
         modeModel: action?.payload?.mode
+      };
+    }
+    case homePageActions.ON_SELECT_BLOG_UPDATE: {
+      return {
+        ...state,
+        blogDataUpdate: action?.payload
       };
     }
     default:
@@ -43,13 +50,20 @@ const actionCreators: (
         type: homePageActions.ON_CHANGE_MODE_MODEL,
         payload: { mode }
       });
+    },
+    onSelectBlogUpdate: (blog: BlogItemProps) => {
+      dispatch({
+        type: homePageActions.ON_SELECT_BLOG_UPDATE,
+        payload: blog
+      });
     }
   };
 };
 
 const initialState: homePageStates = {
   isModelOpen: false,
-  modeModel: ModeModel.CREATE
+  modeModel: ModeModel.CREATE,
+  blogDataUpdate: null
 };
 
 const useHomePageReducer: () => [homePageStates, actionsCreatorProps] = () => {

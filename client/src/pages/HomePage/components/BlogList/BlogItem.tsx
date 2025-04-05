@@ -16,22 +16,23 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
-
-interface BlogItemProps {
-  _id: string;
-  author: string;
-  createdAt: string;
-  attachment: string;
-  title: string;
-  content: string;
-  likeCount: number;
-}
+import useHomePageContext from '~/pages/HomePage/reducer/HomePageContext';
+import { BlogItemProps, ModeModel } from '~/pages/HomePage/types';
 
 const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
   const dispatch = useAppDispatch();
+  const { actions } = useHomePageContext();
+
+  // const { isModelOpen, modeModel } = state;
 
   const formatDate = (date: string) =>
     moment(date).format('HH:mm - DD/MM/YYYY');
+
+  const handleUpdateBlog = () => {
+    actions.onOpenModel(true);
+    actions.onChangeModeModel(ModeModel.EDIT);
+    actions.onSelectBlogUpdate(blogData);
+  };
 
   const handleDeleteBlog = async (id: string) => {
     const payload = {
@@ -70,12 +71,17 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom'>
             <DropdownMenuItem
-              className='btn-delete'
+              className='btn-delete cursor-pointer'
               onClick={() => handleDeleteBlog(blogData._id)}
             >
               Delete
             </DropdownMenuItem>
-            <DropdownMenuItem className='btn-update'>Update</DropdownMenuItem>
+            <DropdownMenuItem
+              className='btn-update cursor-pointer'
+              onClick={handleUpdateBlog}
+            >
+              Update
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>

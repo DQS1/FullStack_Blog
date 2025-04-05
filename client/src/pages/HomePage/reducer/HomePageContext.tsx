@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
-import { useHomePageReducer } from '~/page/HomePage/reducer/homePageReducer';
-import { actionsCreatorProps, homePageStates } from '~/page/HomePage/types';
+import { useHomePageReducer } from '~/pages/HomePage/reducer/homePageReducer';
+import { actionsCreatorProps, homePageStates } from '~/pages/HomePage/types';
 
 interface HomePageContextProps {
   state: homePageStates;

@@ -1,5 +1,5 @@
 import { Toaster } from 'sonner';
-import HomePage from '~/page/HomePage';
+import HomePage from '~/pages/HomePage';
 
 function App() {
   return (

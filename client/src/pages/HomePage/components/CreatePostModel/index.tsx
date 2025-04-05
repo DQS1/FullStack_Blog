@@ -2,7 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { Loader2, Plus } from 'lucide-react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FloatingActionButton from '~/components/fab';
@@ -28,8 +28,8 @@ import { Textarea } from '~/components/ui/textarea';
 import { blogActions } from '~/features/blog/blogSlice';
 import { useAppDispatch } from '~/hooks/useAppDispatch';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import useHomePageContext from '~/page/HomePage/reducer/homePageContext';
-import { ModeModel } from '~/page/HomePage/types';
+import useHomePageContext from '~/pages/HomePage/reducer/HomePageContext';
+import { ModeModel } from '~/pages/HomePage/types';
 import { RootState } from '~/redux/store';
 
 interface uploadDataType {
@@ -41,7 +41,7 @@ interface uploadDataType {
 export default function CreatePostModel() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { state, actions } = useHomePageContext();
-  const { isModelOpen, modeModel } = state;
+  const { isModelOpen, modeModel, blogDataUpdate } = state;
 
   const dispatch = useAppDispatch();
   const updateBlogLoading = useAppSelector(
@@ -70,12 +70,19 @@ export default function CreatePostModel() {
 
   const renderTitle = () => {
     switch (modeModel) {
-      case ModeModel.EDIT:
+      case ModeModel.CREATE:
         return 'Create New Blog';
       default:
         return 'Update Blog';
     }
   };
+  const resetForm = () => {
+    form.reset();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const onSubmit = (data: uploadDataType) => {
     const formData = new FormData();
     formData.append('title', data.title);
@@ -86,6 +93,7 @@ export default function CreatePostModel() {
     }
 
     const payload = {
+      id: blogDataUpdate?._id,
       formData,
       onSuccess: () => {
         actions.onOpenModel(false);
@@ -93,12 +101,31 @@ export default function CreatePostModel() {
       }
     };
     console.log('🚀 ~ Form Data:', Object.fromEntries(formData.entries()));
-    dispatch(blogActions.createBlog(payload));
-    form.reset();
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+
+    dispatch(
+      modeModel === ModeModel.CREATE
+        ? blogActions.createBlog(payload)
+        : blogActions.updateBlog(payload)
+    );
+
+    resetForm();
   };
+
+  useEffect(() => {
+    if (modeModel === ModeModel.EDIT) {
+      form.reset({
+        title: blogDataUpdate?.title,
+        content: blogDataUpdate?.content,
+        attachment: undefined
+      });
+    } else {
+      form.reset({
+        title: '',
+        content: '',
+        attachment: undefined
+      });
+    }
+  }, [modeModel, form, blogDataUpdate]);
 
   return (
     <Dialog
@@ -154,7 +181,7 @@ export default function CreatePostModel() {
                 render={({ field }) => (
                   <FormItem className='relative w-full'>
                     <FormControl>
-                      <Textarea className='min-h-32' {...field} />
+                      <Textarea className='max-h- min-h-32' {...field} />
                     </FormControl>
                     <FormMessage className='absolute bottom-[-24px]' />
                   </FormItem>
@@ -193,11 +220,11 @@ export default function CreatePostModel() {
                 className='w-full cursor-pointer'
                 type='submit'
               >
-                {updateBlogLoading ? (
+                {updateBlogLoading && (
                   <Loader2 className='animate-spin opacity-65' />
-                ) : (
-                  'Create'
                 )}
+                {!updateBlogLoading &&
+                  (modeModel === ModeModel.CREATE ? 'Create' : 'Update')}
               </Button>
             </DialogFooter>
           </form>

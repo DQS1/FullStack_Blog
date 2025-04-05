@@ -32,16 +32,31 @@ const BlogController = {
   updateBlog: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const updateBlog = req.body;
+      const { title, content, author } = req.body;
+      const attachment = req.file ? `/uploads/${req.file.filename}` : null;
 
-      const blog = await Blog.findByIdAndUpdate(id, updateBlog, {
-        returnDocument: "after",
-      });
-      console.log("🚀 ~ updateBlog: ~ blog:", blog);
+      if (!title || !content) {
+        return res
+          .status(400)
+          .json({ error: "Title and content are required." });
+      }
+
+      const blog = await Blog.findByIdAndUpdate(
+        id,
+        { $set: { title, content, author, attachment } },
+        { returnDocument: "after" }
+      );
+
+      if (!blog) {
+        return res.status(404).json({ error: "Blog not found." });
+      }
 
       res.status(200).json(blog);
     } catch (error) {
-      res.status(500).json({ error: error });
+      console.error("Error updating blog:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the blog." });
     }
   },
   deleteBlog: async (req, res, next) => {

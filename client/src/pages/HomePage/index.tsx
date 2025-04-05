@@ -1,7 +1,7 @@
 import Header from '~/components/header';
-import BlogList from '~/page/HomePage/components/BlogList';
-import CreatePostModel from '~/page/HomePage/components/CreatePostModel';
-import { HomePageProvider } from '~/page/HomePage/reducer/homePageContext';
+import BlogList from '~/pages/HomePage/components/BlogList';
+import CreatePostModel from '~/pages/HomePage/components/CreatePostModel';
+import { HomePageProvider } from '~/pages/HomePage/reducer/HomePageContext';
 
 const HomePage = () => {
   return (
