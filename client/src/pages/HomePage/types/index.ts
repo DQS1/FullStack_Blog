@@ -37,5 +37,5 @@ export interface reducerActionProps {
 export interface actionsCreatorProps {
   onOpenModel: (isModelOpen: boolean) => void;
   onChangeModeModel: (mode: ModeModel) => void;
-  onSelectBlogUpdate: (blog: BlogItemProps) => void;
+  onSelectBlogUpdate: (blog: BlogItemProps | null) => void;
 }

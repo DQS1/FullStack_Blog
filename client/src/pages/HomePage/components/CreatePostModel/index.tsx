@@ -97,6 +97,7 @@ export default function CreatePostModel() {
       formData,
       onSuccess: () => {
         actions.onOpenModel(false);
+        actions.onSelectBlogUpdate(null);
         dispatch(blogActions.getAllBlog());
       }
     };
@@ -135,6 +136,7 @@ export default function CreatePostModel() {
           actions.onOpenModel(true);
           actions.onChangeModeModel(ModeModel.CREATE);
         } else {
+          actions.onSelectBlogUpdate(null);
           actions.onOpenModel(false);
           form.reset();
         }

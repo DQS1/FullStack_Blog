@@ -42,6 +42,7 @@ export function* updateBlogWorker({ payload }: ActionType): Generator {
       showToast('Update success', 'success');
     }
   } catch (error) {
+    console.log('🚀 ~ function*updateBlogWorker ~ error:', error);
     yield put(blogActions.updateBlogFailure());
     showToast(`Update failure: ${error}`, 'error');
   }

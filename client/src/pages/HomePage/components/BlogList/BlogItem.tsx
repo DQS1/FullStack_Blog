@@ -71,16 +71,16 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom'>
             <DropdownMenuItem
-              className='btn-delete cursor-pointer'
-              onClick={() => handleDeleteBlog(blogData._id)}
-            >
-              Delete
-            </DropdownMenuItem>
-            <DropdownMenuItem
               className='btn-update cursor-pointer'
               onClick={handleUpdateBlog}
             >
               Update
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className='btn-delete cursor-pointer'
+              onClick={() => handleDeleteBlog(blogData._id)}
+            >
+              Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
