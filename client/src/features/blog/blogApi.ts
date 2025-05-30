@@ -20,8 +20,6 @@ const blogApi = {
     return response;
   },
   updateBlog: async (payload: any): Promise<AxiosResponse<any, any>> => {
-    console.log('🚀 ~ updateBlog: ~ payload.formData:', payload.formData);
-
     const response: AxiosResponse = await axiosInstance.patch<any>(
       `/update/${payload.id}`,
       payload.formData,

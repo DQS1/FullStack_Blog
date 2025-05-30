@@ -16,7 +16,6 @@ const BlogController = {
     }
   },
   createBlog: async (req, res, next) => {
-    console.log("🚀 ~ createBlog: ~ req:", req);
     try {
       const { title, content, author } = req.body;
       const attachment = req.file
@@ -33,7 +32,6 @@ const BlogController = {
     }
   },
   updateBlog: async (req, res, next) => {
-    console.log("🚀 ~ updateBlog: ~ req:", req);
     try {
       const { id } = req.params;
       const { title, content, author } = req.body;

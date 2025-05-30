@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 
 async function connect() {
+  const DB_URL = process.env.DB_URL;
   try {
-    await mongoose.connect(
-      "mongodb+srv://sangdoquang1:Wd5NnKzN4iKGHVzx@cluster0.2rfcm.mongodb.net/data"
-    );
+    await mongoose.connect(DB_URL);
     console.log("Connect successfully!!!");
   } catch (error) {
     console.log("Connect failure!!!", error);

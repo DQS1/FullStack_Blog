@@ -35,7 +35,7 @@ const BlogList = () => {
 
   return blogs?.length ? (
     <div
-      className='mx-[15%] my-2 grid grid-flow-row grid-cols-1 gap-4 md:mx-[5%] md:grid-cols-2'
+      className='mx-[5%] my-2 grid grid-flow-row grid-cols-1 gap-4 md:mx-[25%] md:grid-cols-1'
       // onClick={handleClick}
     >
       {blogs.map((blog: BlogItemProps, index: number) => (

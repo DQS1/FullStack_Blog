@@ -1,5 +1,6 @@
 import { Heart, MoreVertical } from 'lucide-react';
 import moment from 'moment';
+import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import {
@@ -22,6 +23,7 @@ import { BlogItemProps, ModeModel } from '~/pages/HomePage/types';
 const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
   const dispatch = useAppDispatch();
   const { actions } = useHomePageContext();
+  const [openMenu, setOpenMenu] = useState(false);
 
   // const { isModelOpen, modeModel } = state;
 
@@ -29,6 +31,7 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
     moment(date).format('HH:mm - DD/MM/YYYY');
 
   const handleUpdateBlog = () => {
+    setOpenMenu(false);
     actions.onOpenModel(true);
     actions.onChangeModeModel(ModeModel.EDIT);
     actions.onSelectBlogUpdate(blogData);
@@ -59,12 +62,13 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
             </p>
           </div>
         </div>
-        <DropdownMenu>
+        <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
           <DropdownMenuTrigger asChild>
             <Button
               variant={'ghost'}
               size={'icon'}
               className='cursor-pointer hover:rounded-full'
+              onClick={() => setOpenMenu(!openMenu)}
             >
               <MoreVertical className='cursor-pointer text-gray-400' />
             </Button>
@@ -73,6 +77,7 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
             <DropdownMenuItem
               className='btn-update cursor-pointer'
               onClick={handleUpdateBlog}
+              onSelect={(e) => e.preventDefault()}
             >
               Update
             </DropdownMenuItem>
@@ -91,7 +96,7 @@ const BlogItem = ({ blogData }: { blogData: BlogItemProps }) => {
           <img
             src={`http://localhost:5000${blogData?.attachment}`}
             alt='Blog image'
-            className='h-[200px] w-full object-cover'
+            className='h-[20rem] w-full object-cover'
           />
         )}
 
